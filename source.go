@@ -1,4 +1,4 @@
-package randomness
+package random
 
 type Source interface {
 	Fill([]byte) error

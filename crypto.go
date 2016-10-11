@@ -1,4 +1,4 @@
-package randomness
+package random
 
 import (
 	"crypto/rand"
@@ -6,11 +6,11 @@ import (
 	"io"
 )
 
-var Crypto Source = crypto{}
+var Crypto Source = cryptoSource{}
 
-type crypto struct{}
+type cryptoSource struct{}
 
-func (c crypto) Fill(buf []byte) error {
+func (c cryptoSource) Fill(buf []byte) error {
 
 	n, err := io.ReadFull(rand.Reader, buf)
 
@@ -26,7 +26,7 @@ func (c crypto) Fill(buf []byte) error {
 
 }
 
-func (c crypto) Generate(bytes uint32) ([]byte, error) {
+func (c cryptoSource) Generate(bytes uint32) ([]byte, error) {
 
 	buf := make([]byte, int(bytes))
 

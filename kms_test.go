@@ -3,16 +3,21 @@ package random
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/kms"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCryptoGen(t *testing.T) {
+func TestKMSGen(t *testing.T) {
 
-	const reps = 65536
+	const reps = 16
 
 	assert := assert.New(t)
 
-	buf, err := Crypto.Generate(16)
+	source := NewKMS(kms.New(session.New(), aws.NewConfig().WithRegion("eu-west-1")))
+
+	buf, err := source.Generate(16)
 
 	assert.NoError(err)
 	assert.Len(buf, 16)
@@ -24,7 +29,7 @@ func TestCryptoGen(t *testing.T) {
 
 	for i := 0; i < reps; i++ {
 
-		buf, err = Crypto.Generate(16)
+		buf, err = source.Generate(16)
 		assert.NoError(err)
 
 		_, ok := set[string(buf)]
